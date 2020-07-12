@@ -31,4 +31,7 @@ body {
 .text-navy {
   color: #154360;
 }
+.bg-navy {
+  background: #154360;
+}
 </style>
