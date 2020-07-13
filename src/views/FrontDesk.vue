@@ -20,16 +20,27 @@
           </div>
         </div>
         <div class="d-flex pt-5 mt-4">
-          <b-button class="btn-attendance mr-3" @click="generatePassword(1)"
+          <b-button
+            :disabled="buttonsStatus"
+            class="btn-attendance mr-3"
+            @click="generatePassword(1)"
             >NORMAL</b-button
           >
-          <b-button class="btn-attendance" @click="generatePassword(2)"
+          <b-button
+            :disabled="buttonsStatus"
+            class="btn-attendance"
+            @click="generatePassword(2)"
             >PREFERENCIAL</b-button
           >
         </div>
       </div>
       <div class="col-md-6 img-cover">
         <b-img fluid :src="require('../assets/front-desk.jpg')" alt="" />
+      </div>
+      <div class="btn-logout">
+        <b-button small class="bg-dark" @click="finishLine"
+          >Encerrar fila</b-button
+        >
       </div>
     </div>
   </div>
@@ -41,6 +52,7 @@ import { atendimento } from "../api/api.js";
 export default {
   name: "FrontDesk",
   data: () => ({
+    buttonsStatus: false,
     tokenAtendimento: null,
     form: {
       email: "",
@@ -56,8 +68,26 @@ export default {
           }
         })
         .then(() => {
-          alert("Senha gerada com sucesso");
+          // bloquear buttons
+          this.buttonsStatus = true;
+          setTimeout(() => {
+            this.buttonsStatus = false;
+          }, 5000);
         });
+    },
+    finishLine() {
+      atendimento.delete("queue/1", {
+        headers: {
+          Authorization: `Bearer ${this.tokenAtendimento}`
+        }
+      });
+      atendimento.delete("queue/2", {
+        headers: {
+          Authorization: `Bearer ${this.tokenAtendimento}`
+        }
+      });
+      localStorage.removeItem("tokenAtendimento");
+      this.$router.push({ path: "login-atendimento" });
     }
   },
   mounted() {
@@ -92,5 +122,9 @@ export default {
   width: 100%;
   font-size: 30px;
   height: 140px;
+}
+.btn-logout {
+  position: absolute;
+  right: 0;
 }
 </style>
