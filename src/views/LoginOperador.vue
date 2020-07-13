@@ -9,16 +9,15 @@
           <b-form @submit="onSubmit">
             <b-form-group
               id="input-group-1"
-              label="Email:"
+              label="Login:"
               required
               label-for="input-1"
             >
               <b-form-input
                 id="input-1"
-                v-model="form.email"
-                type="email"
+                v-model="form.login"
                 required
-                placeholder="user@costao.com.br"
+                placeholder="usuario"
               ></b-form-input>
             </b-form-group>
             <b-form-group
@@ -29,7 +28,7 @@
             >
               <b-form-input
                 id="input-1"
-                v-model="form.password"
+                v-model="form.senha"
                 type="password"
                 required
                 placeholder="********"
@@ -51,23 +50,33 @@
 </template>
 
 <script>
-import { api } from "../api.js";
+import { operador } from "../api/api.js";
 
 export default {
-  name: "Login",
+  name: "LoginOperador",
   data: () => ({
     form: {
-      email: "",
-      password: ""
+      login: "",
+      senha: ""
     }
   }),
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      alert(JSON.stringify(this.form));
-      api.post("path", {
-        ...this.form
-      });
+      operador
+        .post("login", {
+          ...this.form
+        })
+        .then(res => {
+          console.log(res);
+          if (res.data) {
+            const { token, id, nome } = res.data;
+            localStorage.setItem("userId", id);
+            localStorage.setItem("tokenOperador", token);
+            localStorage.setItem("nome", nome);
+          }
+          this.$router.push({ path: "/operation" });
+        });
     }
   }
 };

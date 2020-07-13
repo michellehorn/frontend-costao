@@ -1,22 +1,34 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
-import Login from "../views/Login.vue";
+import Monitor from "../views/Monitor.vue";
+import LoginAtendimento from "../views/LoginAtendimento.vue";
+import LoginOperador from "../views/LoginOperador.vue";
+import LoginMonitor from "../views/LoginMonitor.vue";
 import FrontDesk from "../views/FrontDesk.vue";
-import Attendance from "../views/Attendance.vue";
+import Operation from "../views/Operation.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    component: Home
+    path: "/monitor",
+    name: "Monitor",
+    component: Monitor
   },
   {
-    path: "/login",
-    name: "Login",
-    component: Login
+    path: "/login-atendimento",
+    name: "LoginAtendimento",
+    component: LoginAtendimento
+  },
+  {
+    path: "/login-operador",
+    name: "LoginOperador",
+    component: LoginOperador
+  },
+  {
+    path: "/login-monitor",
+    name: "LoginMonitor",
+    component: LoginMonitor
   },
   {
     path: "/front-desk",
@@ -24,9 +36,9 @@ const routes = [
     component: FrontDesk
   },
   {
-    path: "/attendance",
-    name: "Attendance",
-    component: Attendance
+    path: "/operation",
+    name: "Operation",
+    component: Operation
   }
 ];
 

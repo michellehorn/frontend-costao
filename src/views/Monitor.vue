@@ -7,11 +7,11 @@
         <div class="col-md-6 pr-5 pl-5">
           <b-card class="mr-5 ml-5 p-4 text-center">
             <h3 class="font-family-secondary">SENHA</h3>
-            <h1 class="font-weight-bold">{{ nextPassword }}</h1>
+            <h1 class="font-weight-bold">{{ items[0].senha }}</h1>
           </b-card>
           <b-card class="mr-5 ml-5 mt-4 p-4  text-center">
             <h3 class="font-family-secondary">GUICHÊ</h3>
-            <h1 class="font-weight-bold">{{ ticketWindow }}</h1>
+            <h1 class="font-weight-bold">{{ items[0].posto }}</h1>
           </b-card>
         </div>
         <div class="col-md-6 font-family-secondary">
@@ -22,18 +22,23 @@
               :fields="fields"
               class="text-center text-navy mt-4 table-borderless table-condensed"
             >
-              <template v-slot:head(password)>
+              <template v-slot:head(senha)>
                 <h5>SENHA</h5>
               </template>
-              <template v-slot:head(ticketWindow)>
+              <template v-slot:head(posto)>
                 <h5>GUICHÊ</h5>
               </template>
-              <template v-slot:head(time)>
-                <h5>HORA</h5>
+              <template v-slot:head(data)>
+                <h5>DATA/HORA</h5>
               </template>
               <template v-slot:cell()="data">
                 <h3 class="font-family-secondary">
                   <strong>{{ data.value }}</strong>
+                </h3>
+              </template>
+              <template v-slot:cell(data)="dt">
+                <h3 class="font-family-secondary">
+                  <strong>{{ dt.value | formatDate }}</strong>
                 </h3>
               </template>
             </b-table>
@@ -45,41 +50,54 @@
 </template>
 
 <script>
+import { monitor } from "../api/api.js";
+import moment from "moment";
+
 export default {
   name: "Home",
-  components: {},
+  filters: {
+    formatDate: function(val) {
+      if (val) {
+        return moment(String(val)).format("DD/MM/YYYY hh:mm");
+      }
+    }
+  },
   data: () => ({
+    headers: null,
     nextPassword: "1234",
     ticketWindow: "G1",
     items: [
       {
-        password: "C3454",
-        ticketWindow: "G1",
-        time: "10:50"
-      },
-      {
-        password: "C3454",
-        ticketWindow: "G1",
-        time: "10:50"
-      },
-      {
-        password: "C3454",
-        ticketWindow: "G1",
-        time: "10:50"
-      },
-      {
-        password: "C3454",
-        ticketWindow: "G1",
-        time: "10:50"
-      },
-      {
-        password: "C3454",
-        ticketWindow: "G1",
-        time: "10:50"
+        senha: "C3454",
+        posto: "G1",
+        data: "10:50"
       }
     ],
-    fields: ["password", "ticketWindow", "time"]
-  })
+    fields: ["senha", "posto", "data"]
+  }),
+  mounted() {
+    const tokenMonitor = localStorage.getItem("tokenMonitor");
+    if (tokenMonitor) {
+      this.headers = {
+        Authorization: `Bearer ${tokenMonitor}`
+      };
+      this.getItems();
+    } else {
+      this.$router.push({ path: "login-monitor" });
+    }
+  },
+  methods: {
+    getItems() {
+      monitor
+        .get("monitor", { headers: this.headers })
+        .then(res => {
+          this.items = res.data[0].atendimentos;
+        })
+        .catch(() => {
+          this.$router.push({ path: "login-monitor" });
+        });
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

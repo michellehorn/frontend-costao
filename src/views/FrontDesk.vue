@@ -36,10 +36,10 @@
 </template>
 
 <script>
-import { api } from "../api.js";
+import { atendimento } from "../api/api.js";
 
 export default {
-  name: "Login",
+  name: "FrontDesk",
   data: () => ({
     form: {
       email: "",
@@ -48,7 +48,7 @@ export default {
   }),
   methods: {
     generatePassword(type) {
-      api
+      atendimento
         .post("path", {
           type: type
         })
