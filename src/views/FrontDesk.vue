@@ -41,6 +41,7 @@ import { atendimento } from "../api/api.js";
 export default {
   name: "FrontDesk",
   data: () => ({
+    tokenAtendimento: null,
     form: {
       email: "",
       password: ""
@@ -49,12 +50,20 @@ export default {
   methods: {
     generatePassword(type) {
       atendimento
-        .post("path", {
-          type: type
+        .get(`queue/${type}`, {
+          headers: {
+            Authorization: `Bearer ${this.tokenAtendimento}`
+          }
         })
         .then(() => {
-          alert("ok");
+          alert("Senha gerada com sucesso");
         });
+    }
+  },
+  mounted() {
+    this.tokenAtendimento = localStorage.getItem("tokenAtendimento");
+    if (!this.tokenAtendimento) {
+      this.$router.push({ path: "login-atendimento" });
     }
   }
 };

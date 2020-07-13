@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { operador } from "../api/api.js";
+import { atendimento } from "../api/api.js";
 
 export default {
   name: "LoginAtendimento",
@@ -63,12 +63,13 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      operador
+      atendimento
         .post("login", {
           ...this.form
         })
         .then(res => {
-          alert(res);
+          localStorage.setItem("tokenAtendimento", res.data.token);
+          this.$router.push({ path: "front-desk" });
         });
     }
   }
