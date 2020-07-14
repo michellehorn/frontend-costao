@@ -82,6 +82,12 @@ export default {
           this.hasPassword = true;
           this.currentPassword = res.data.senha;
           this.afterDone = false;
+        })
+        .catch(err => {
+          if (err.response.status === 404) {
+            alert("Fila vazia");
+          }
+          this.currentPassword = null;
         });
     },
     callCurrent() {

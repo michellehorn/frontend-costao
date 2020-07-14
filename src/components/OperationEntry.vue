@@ -49,7 +49,11 @@
           >
         </b-form-group>
         <div fluid class="text-light text-center">
-          <b-button style="width: 200px" type="submit" variant="primary"
+          <b-button
+            :disabled="!this.form.window"
+            style="width: 200px"
+            type="submit"
+            variant="primary"
             >Entrar</b-button
           >
         </div>
@@ -110,8 +114,10 @@ export default {
   methods: {
     onSubmit(e) {
       e.preventDefault();
-      localStorage.setItem("id_area", this.form.window);
-      this.$emit("areaSelected");
+      if (this.form.window) {
+        localStorage.setItem("id_posto", this.form.window);
+        this.$emit("areaSelected");
+      }
     },
     getData() {
       operador.get("company", { headers: this.headers }).then(res => {

@@ -78,12 +78,25 @@ export default {
   mounted() {
     const tokenMonitor = localStorage.getItem("tokenMonitor");
     if (tokenMonitor) {
+      this.$socket.emit("authentication", {
+        token: this.tokenMonitor
+      });
       this.headers = {
         Authorization: `Bearer ${tokenMonitor}`
       };
       this.getItems();
     } else {
       this.$router.push({ path: "login-monitor" });
+    }
+  },
+  sockets: {
+    connect: function() {
+      console.log("socket connected");
+    },
+    senha: function(data) {
+      console.log(
+        `this method was fired by the socket server. eg: io.emit("customEmit", ${data})`
+      );
     }
   },
   methods: {

@@ -37,13 +37,13 @@ export default {
       this.$router.push({ path: "login-operador" });
     },
     areaSelected() {
-      this.idArea = localStorage.getItem("id_area");
+      this.idArea = localStorage.getItem("id_posto");
       this.tokenOperador = localStorage.getItem("tokenOperador");
       this.hasPlace = true;
     }
   },
   mounted() {
-    this.idArea = localStorage.getItem("id_area");
+    this.idArea = localStorage.getItem("id_posto");
     this.tokenOperador = localStorage.getItem("tokenOperador");
     if (!this.tokenOperador) {
       this.$router.push({ path: "login-operador" });
