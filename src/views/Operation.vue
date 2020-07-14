@@ -12,7 +12,7 @@
     </b-navbar-nav>
     <b-container class="pt-3">
       <OperationList v-if="hasPlace" />
-      <OperationEntry v-else />
+      <OperationEntry @areaSelected="areaSelected" v-else />
     </b-container>
   </div>
 </template>
@@ -35,6 +35,11 @@ export default {
       this.hasPlace = false;
       localStorage.removeItem("tokenOperador");
       this.$router.push({ path: "login-operador" });
+    },
+    areaSelected() {
+      this.idArea = localStorage.getItem("id_area");
+      this.tokenOperador = localStorage.getItem("tokenOperador");
+      this.hasPlace = true;
     }
   },
   mounted() {
