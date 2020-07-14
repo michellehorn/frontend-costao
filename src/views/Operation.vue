@@ -28,7 +28,7 @@ export default {
     OperationList
   },
   data: () => ({
-    hasPlace: true
+    hasPlace: false
   }),
   methods: {
     logoff() {
@@ -39,8 +39,8 @@ export default {
   },
   mounted() {
     this.idArea = localStorage.getItem("id_area");
-    this.tokenAtendimento = localStorage.getItem("tokenAtendimento");
-    if (!this.tokenAtendimento) {
+    this.tokenOperador = localStorage.getItem("tokenOperador");
+    if (!this.tokenOperador) {
       this.$router.push({ path: "login-operador" });
     }
     if (this.idArea) {

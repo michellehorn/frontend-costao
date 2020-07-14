@@ -68,7 +68,6 @@ export default {
           ...this.form
         })
         .then(res => {
-          console.log(res);
           if (res.data) {
             const { token, id, nome } = res.data;
             localStorage.setItem("userId", id);

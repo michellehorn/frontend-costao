@@ -13,12 +13,18 @@ const routes = [
   {
     path: "/monitor",
     name: "Monitor",
-    component: Monitor
+    component: Monitor,
+    meta: {
+      title: "Monitor"
+    }
   },
   {
     path: "/login-atendimento",
     name: "LoginAtendimento",
-    component: LoginAtendimento
+    component: LoginAtendimento,
+    meta: {
+      title: "Atendimento | Login"
+    }
   },
   {
     path: "/login-operador",
