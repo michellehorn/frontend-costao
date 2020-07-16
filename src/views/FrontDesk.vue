@@ -67,13 +67,23 @@ export default {
             Authorization: `Bearer ${this.tokenAtendimento}`
           }
         })
-        .then(() => {
+        .then(response => {
           // bloquear buttons
+          this.print(response.data.senha);
+
           this.buttonsStatus = true;
           setTimeout(() => {
             this.buttonsStatus = false;
           }, 5000);
         });
+    },
+    print(senha) {
+      let a = window.open("", "", "height=150, width=250");
+      a.document.write("<html>");
+      a.document.write(`<body ><h1>${senha}</h1><br>`);
+      a.document.write("</body></html>");
+      a.document.close();
+      a.print();
     },
     finishLine() {
       atendimento.delete("queue/1", {
