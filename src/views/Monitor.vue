@@ -5,10 +5,14 @@
       <img :src="require('../assets/logo.png')" alt="" class="ml-3 mr-3" />
       <section class="d-flex pt-4 pl-5 pr-5 text-navy">
         <div class="col-md-6 pr-5 pl-5">
-          <b-card class="mr-5 ml-5 p-4 text-center">
-            <h3 class="font-family-secondary">SENHA</h3>
-            <h1 class="font-weight-bold">{{ items[0].senha }}</h1>
-          </b-card>
+          <transition name="slide-fade" mode="out-in">
+            <div :key="nextPassword">
+              <b-card class="mr-5 ml-5 p-4 text-center">
+                <h3 class="font-family-secondary">SENHA</h3>
+                <h1 class="font-weight-bold">{{ nextPassword }}</h1>
+              </b-card>
+            </div>
+          </transition>
           <b-card class="mr-5 ml-5 mt-4 p-4  text-center">
             <h3 class="font-family-secondary">GUICHÊ</h3>
             <h1 class="font-weight-bold">{{ items[0].posto }}</h1>
@@ -75,28 +79,34 @@ export default {
     ],
     fields: ["senha", "posto", "data"]
   }),
+  created() {
+    this.$socket.on("connect", () => {
+      alert("socket conectado");
+    });
+    this.$socket.emit("authentication", {
+      token: this.tokenMonitor
+    });
+  },
   mounted() {
     const tokenMonitor = localStorage.getItem("tokenMonitor");
     if (tokenMonitor) {
-      this.$socket.emit("authentication", {
-        token: this.tokenMonitor
+      this.$socket.on("senha", senha => {
+        this.nextPassword = senha;
+        this.playSound(
+          "http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3"
+        );
       });
+      this.$socket.on("inicial", inicial => {
+        console.log("inicial: ", inicial);
+        alert("done");
+      });
+
       this.headers = {
         Authorization: `Bearer ${tokenMonitor}`
       };
       this.getItems();
     } else {
       this.$router.push({ path: "login-monitor" });
-    }
-  },
-  sockets: {
-    connect: function() {
-      console.log("socket connected");
-    },
-    senha: function(data) {
-      console.log(
-        `this method was fired by the socket server. eg: io.emit("customEmit", ${data})`
-      );
     }
   },
   methods: {
@@ -109,6 +119,12 @@ export default {
         .catch(() => {
           this.$router.push({ path: "login-monitor" });
         });
+    },
+    playSound(sound) {
+      if (sound) {
+        var audio = new Audio(sound);
+        audio.play();
+      }
     }
   }
 };
@@ -139,6 +155,20 @@ export default {
   h1 {
     font-size: 100px;
     font-weight: bolder;
+  }
+}
+.slide-fade-enter-active {
+  /* transition: all 0.3s ease; */
+  animation: blinker 1s linear infinite;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for <2.1.8 */ {
+  opacity: 0;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
   }
 }
 </style>
