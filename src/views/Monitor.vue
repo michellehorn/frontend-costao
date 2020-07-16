@@ -11,12 +11,12 @@
                 <h3 class="font-family-secondary">SENHA</h3>
                 <h1 class="font-weight-bold">{{ nextPassword }}</h1>
               </b-card>
+              <b-card class="mr-5 ml-5 mt-4 p-4  text-center">
+                <h3 class="font-family-secondary">GUICHÊ</h3>
+                <h1 class="font-weight-bold">{{ ticketWindow }}</h1>
+              </b-card>
             </div>
           </transition>
-          <b-card class="mr-5 ml-5 mt-4 p-4  text-center">
-            <h3 class="font-family-secondary">GUICHÊ</h3>
-            <h1 class="font-weight-bold">{{ ticketWindow }}</h1>
-          </b-card>
         </div>
         <div class="col-md-6 font-family-secondary">
           <b-card style="height: 100%">
@@ -84,7 +84,7 @@ export default {
     if (tokenMonitor) {
       this.$socket.on("connect", () => {
         this.$socket.emit("authentication", {
-          token: this.tokenMonitor
+          token: tokenMonitor
         });
       });
       this.$socket.on("senha", senha => {
