@@ -6,10 +6,13 @@ import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import VueSocketIO from "vue-socket.io";
 import SocketIO from "socket.io-client";
 
+const options = { autoConnect: false, origins: "*" };
+
 Vue.use(
   new VueSocketIO({
     debug: true,
-    connection: SocketIO("http://192.168.0.20:3004") //options object is Optional
+    connection: SocketIO("http://192.168.0.20:3004", options)
+    //options object is Optional
   })
 );
 Vue.config.productionTip = false;

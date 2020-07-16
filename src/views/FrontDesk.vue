@@ -70,7 +70,6 @@ export default {
         .then(response => {
           // bloquear buttons
           this.print(response.data.senha);
-
           this.buttonsStatus = true;
           setTimeout(() => {
             this.buttonsStatus = false;

@@ -15,7 +15,7 @@
           </transition>
           <b-card class="mr-5 ml-5 mt-4 p-4  text-center">
             <h3 class="font-family-secondary">GUICHÊ</h3>
-            <h1 class="font-weight-bold">{{ items[0].posto }}</h1>
+            <h1 class="font-weight-bold">{{ ticketWindow }}</h1>
           </b-card>
         </div>
         <div class="col-md-6 font-family-secondary">
@@ -79,27 +79,29 @@ export default {
     ],
     fields: ["senha", "posto", "data"]
   }),
-  created() {
-    this.$socket.on("connect", () => {
-      alert("socket conectado");
-    });
-    this.$socket.emit("authentication", {
-      token: this.tokenMonitor
-    });
-  },
   mounted() {
     const tokenMonitor = localStorage.getItem("tokenMonitor");
     if (tokenMonitor) {
+      this.$socket.on("connect", () => {
+        this.$socket.emit("authentication", {
+          token: this.tokenMonitor
+        });
+      });
       this.$socket.on("senha", senha => {
-        this.nextPassword = senha;
+        this.ticketWindow = senha.p;
+        this.nextPassword = senha.s;
         this.playSound(
           "http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3"
         );
       });
       this.$socket.on("inicial", inicial => {
-        console.log("inicial: ", inicial);
-        alert("done");
+        this.items = inicial[0].atendimentos;
       });
+
+      this.$socket.on("disconnect", reason => {
+        console.log(reason);
+      });
+      this.$socket.open();
 
       this.headers = {
         Authorization: `Bearer ${tokenMonitor}`
@@ -115,6 +117,8 @@ export default {
         .get("monitor", { headers: this.headers })
         .then(res => {
           this.items = res.data[0].atendimentos;
+          this.nextPassword = this.items[0].senha;
+          this.ticketWindow = this.items[0].posto;
         })
         .catch(() => {
           this.$router.push({ path: "login-monitor" });
