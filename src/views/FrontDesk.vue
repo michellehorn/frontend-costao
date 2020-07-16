@@ -83,7 +83,9 @@ export default {
       a.document.write(`<body ><h1>${senha}</h1><br>`);
       a.document.write("</body></html>");
       a.document.close();
+      a.focus();
       a.print();
+      a.onafterprint = a.close();
     },
     finishLine() {
       atendimento.delete("queue/1", {
