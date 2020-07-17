@@ -3,7 +3,7 @@
     <b-row class="pt-4 align-center col-md-12 text-center">
       <b-card class="p-4 pb-5 pt-5 text-navy m-auto">
         <h3 class="font-family-secondary">SENHA</h3>
-        <h1 class="font-weight-bold">{{ currentPassword }}</h1>
+        <h1 class="font-weight-bold" v-if="!afterDone && currentPassword">{{ currentPassword }}</h1>
       </b-card>
     </b-row>
     <b-row class="pt-5 align-center col-md-12 text-center">
@@ -91,6 +91,7 @@ export default {
         });
     },
     callCurrent() {
+      this.afterDone = false;
       operador
         .get(`queue/${this.idPosto}`, {
           headers: this.headers,

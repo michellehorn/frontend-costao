@@ -106,8 +106,8 @@ export default {
           senha: senha.s,
           posto: senha.p,
           data: senha.d
-        })
-        this.items.pop()
+        });
+        this.items.pop();
         this.playSound(
           "http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3"
         );
