@@ -33,7 +33,7 @@
                 <h5>GUICHÊ</h5>
               </template>
               <template v-slot:head(data)>
-                <h5>DATA/HORA</h5>
+                <h5>HORA</h5>
               </template>
               <template v-slot:cell()="data">
                 <h3 class="font-family-secondary">
