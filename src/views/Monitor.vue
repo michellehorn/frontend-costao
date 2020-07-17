@@ -56,6 +56,7 @@
 <script>
 import { monitor } from "../api/api.js";
 import moment from "moment";
+import io from "socket.io-client";
 
 export default {
   name: "Home",
@@ -67,6 +68,7 @@ export default {
     }
   },
   data: () => ({
+    socket: io("http://192.168.0.20:3004"),
     headers: null,
     nextPassword: "1234",
     ticketWindow: "G1",
@@ -79,34 +81,37 @@ export default {
     ],
     fields: ["senha", "posto", "data"]
   }),
+  created() {
+    const tokenMonitor = localStorage.getItem("tokenMonitor");
+    this.socket.on("connect", () => {
+      this.socket.emit("authentication", {
+        token: tokenMonitor
+      });
+    });
+    this.headers = {
+      Authorization: `Bearer ${tokenMonitor}`
+    };
+    this.getItems();
+  },
   mounted() {
     const tokenMonitor = localStorage.getItem("tokenMonitor");
     if (tokenMonitor) {
-      this.$socket.on("connect", () => {
-        this.$socket.emit("authentication", {
-          token: tokenMonitor
-        });
-      });
-      this.$socket.on("senha", senha => {
-        this.ticketWindow = senha.p;
+      this.socket.on("senha", senha => {
         this.nextPassword = senha.s;
+        this.ticketWindow = senha.p;
+        this.getItems();
         this.playSound(
           "http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3"
         );
       });
-      this.$socket.on("inicial", inicial => {
+
+      this.socket.on("inicial", inicial => {
         this.items = inicial[0].atendimentos;
       });
 
-      this.$socket.on("disconnect", reason => {
-        console.log(reason);
+      this.socket.on("disconnect", text => {
+        console.log(text);
       });
-      this.$socket.open();
-
-      this.headers = {
-        Authorization: `Bearer ${tokenMonitor}`
-      };
-      this.getItems();
     } else {
       this.$router.push({ path: "login-monitor" });
     }

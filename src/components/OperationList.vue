@@ -66,13 +66,13 @@ export default {
     currentPassword: null,
     tokenOperador: null,
     idUser: null,
-    idArea: null,
+    idPosto: null,
     headers: null
   }),
   methods: {
     callNext() {
       operador
-        .get(`queue/${this.idArea}`, {
+        .get(`queue/${this.idPosto}`, {
           headers: this.headers,
           params: {
             op: 1
@@ -92,7 +92,7 @@ export default {
     },
     callCurrent() {
       operador
-        .get(`queue/${this.idArea}`, {
+        .get(`queue/${this.idPosto}`, {
           headers: this.headers,
           params: {
             op: 2
@@ -106,7 +106,7 @@ export default {
     },
     startService() {
       operador
-        .get(`queue/${this.idArea}`, {
+        .get(`queue/${this.idPosto}`, {
           headers: this.headers,
           params: {
             op: 3
@@ -118,7 +118,7 @@ export default {
     },
     finishService() {
       operador
-        .get(`queue/${this.idArea}`, {
+        .get(`queue/${this.idPosto}`, {
           headers: this.headers,
           params: {
             op: 4
@@ -132,7 +132,7 @@ export default {
   },
   mounted() {
     this.tokenOperador = localStorage.getItem("tokenOperador");
-    this.idArea = localStorage.getItem("id_area");
+    this.idPosto = localStorage.getItem("id_posto");
     this.idUser = localStorage.getItem("userId");
     this.headers = {
       Authorization: `Bearer ${this.tokenOperador}`
