@@ -90,7 +90,7 @@ export default {
       a.document.close();
       a.focus();
       a.print();
-      // a.onafterprint = a.close();
+      a.onafterprint = a.close();
     },
     finishLine() {
       atendimento.delete("queue/1", {
@@ -119,7 +119,6 @@ export default {
         }
       })
       .then(res => {
-        console.log(res);
         this.preSenha = res.data[0].ds_pre_senha;
         this.posSenha = res.data[0].ds_pos_senha;
       });
