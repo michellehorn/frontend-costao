@@ -100,9 +100,14 @@ export default {
         this.nextPassword = null;
         setTimeout(() => {
           this.nextPassword = senha.s;
-        }, 3000);
+        }, 500);
         this.ticketWindow = senha.p;
-        this.getItems();
+        this.items.unshift({
+          senha: senha.s,
+          posto: senha.p,
+          data: senha.d
+        })
+        this.items.pop()
         this.playSound(
           "http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3"
         );
