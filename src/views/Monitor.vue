@@ -97,7 +97,10 @@ export default {
     const tokenMonitor = localStorage.getItem("tokenMonitor");
     if (tokenMonitor) {
       this.socket.on("senha", senha => {
-        this.nextPassword = senha.s;
+        this.nextPassword = null;
+        setTimeout(() => {
+          this.nextPassword = senha.s;
+        }, 3000);
         this.ticketWindow = senha.p;
         this.getItems();
         this.playSound(
@@ -132,6 +135,7 @@ export default {
     playSound(sound) {
       if (sound) {
         var audio = new Audio(sound);
+        audio.autoplay = true;
         audio.play();
       }
     }
