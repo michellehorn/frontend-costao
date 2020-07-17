@@ -54,6 +54,8 @@ export default {
   data: () => ({
     buttonsStatus: false,
     tokenAtendimento: null,
+    preSenha: null,
+    posSenha: null,
     form: {
       email: "",
       password: ""
@@ -77,14 +79,18 @@ export default {
         });
     },
     print(senha) {
-      let a = window.open("", "", "height=150, width=250");
+      let a = window.open("", "", "height=300, width=450");
       a.document.write("<html>");
-      a.document.write(`<body ><h1>${senha}</h1><br>`);
+      a.document.write(`<body><h4>${this.preSenha}</h3>`);
+      a.document.write(
+        `<h2 style="font-size: 100px; text-align: center; margin: 0;">${senha}</h2>`
+      );
+      a.document.write(`<h5>${this.posSenha}</h5>`);
       a.document.write("</body></html>");
       a.document.close();
       a.focus();
       a.print();
-      a.onafterprint = a.close();
+      // a.onafterprint = a.close();
     },
     finishLine() {
       atendimento.delete("queue/1", {
@@ -106,6 +112,17 @@ export default {
     if (!this.tokenAtendimento) {
       this.$router.push({ path: "login-atendimento" });
     }
+    atendimento
+      .get("config", {
+        headers: {
+          Authorization: `Bearer ${this.tokenAtendimento}`
+        }
+      })
+      .then(res => {
+        console.log(res);
+        this.preSenha = res.data[0].ds_pre_senha;
+        this.posSenha = res.data[0].ds_pos_senha;
+      });
   }
 };
 </script>
