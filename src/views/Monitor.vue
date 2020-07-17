@@ -102,7 +102,7 @@ export default {
           this.nextPassword = senha.s;
         }, 500);
         this.ticketWindow = senha.p;
-        if (this.items[0].senha !== senha.s) {
+        if (senha.o === 1) {
           this.items.unshift({
             senha: senha.s,
             posto: senha.p,
