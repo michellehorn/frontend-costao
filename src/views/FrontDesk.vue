@@ -37,11 +37,6 @@
       <div class="col-md-6 img-cover">
         <b-img fluid :src="require('../assets/front-desk.jpg')" alt="" />
       </div>
-      <div class="btn-logout">
-        <b-button small class="bg-dark" @click="finishLine"
-          >Encerrar fila</b-button
-        >
-      </div>
     </div>
   </div>
 </template>
@@ -81,31 +76,35 @@ export default {
     print(senha) {
       let a = window.open("", "", "height=300, width=450");
       a.document.write("<html>");
-      a.document.write(`<body><h4>${this.preSenha}</h3>`);
+      a.document.write(
+        `<body><h4 style="text-align: center; margin: 0; padding-top: 1em;">${this.preSenha}</h3>`
+      );
       a.document.write(
         `<h2 style="font-size: 100px; text-align: center; margin: 0;">${senha}</h2>`
       );
-      a.document.write(`<h5>${this.posSenha}</h5>`);
+      a.document.write(
+        `<h5 style="text-align: center; margin: 0;">${this.posSenha}</h5>`
+      );
       a.document.write("</body></html>");
       a.document.close();
       a.focus();
       a.print();
       a.onafterprint = a.close();
-    },
-    finishLine() {
-      atendimento.delete("queue/1", {
-        headers: {
-          Authorization: `Bearer ${this.tokenAtendimento}`
-        }
-      });
-      atendimento.delete("queue/2", {
-        headers: {
-          Authorization: `Bearer ${this.tokenAtendimento}`
-        }
-      });
-      localStorage.removeItem("tokenAtendimento");
-      this.$router.push({ path: "login-atendimento" });
     }
+    // finishLine() {
+    //   atendimento.delete("queue/1", {
+    //     headers: {
+    //       Authorization: `Bearer ${this.tokenAtendimento}`
+    //     }
+    //   });
+    //   atendimento.delete("queue/2", {
+    //     headers: {
+    //       Authorization: `Bearer ${this.tokenAtendimento}`
+    //     }
+    //   });
+    //   localStorage.removeItem("tokenAtendimento");
+    //   this.$router.push({ path: "login-atendimento" });
+    // }
   },
   mounted() {
     this.tokenAtendimento = localStorage.getItem("tokenAtendimento");
