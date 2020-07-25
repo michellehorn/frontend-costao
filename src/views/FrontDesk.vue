@@ -91,20 +91,6 @@ export default {
       a.print();
       a.onafterprint = a.close();
     }
-    // finishLine() {
-    //   atendimento.delete("queue/1", {
-    //     headers: {
-    //       Authorization: `Bearer ${this.tokenAtendimento}`
-    //     }
-    //   });
-    //   atendimento.delete("queue/2", {
-    //     headers: {
-    //       Authorization: `Bearer ${this.tokenAtendimento}`
-    //     }
-    //   });
-    //   localStorage.removeItem("tokenAtendimento");
-    //   this.$router.push({ path: "login-atendimento" });
-    // }
   },
   mounted() {
     this.tokenAtendimento = localStorage.getItem("tokenAtendimento");

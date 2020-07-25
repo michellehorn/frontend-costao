@@ -68,7 +68,6 @@ export default {
           ...this.form
         })
         .then(res => {
-          console.log(res);
           localStorage.setItem("tokenAtendimento", res.data.token);
           this.$router.push({ path: "front-desk" });
         });
