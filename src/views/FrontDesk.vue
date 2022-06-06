@@ -4,12 +4,12 @@
       <div class="col-md-6 container-form ">
         <div class="text-center">
           <img
-            style="width: 300px"
+            style="width: 250px"
             :src="require('../assets/logo.png')"
             alt=""
           />
         </div>
-        <div class="font-family-primary mt-5 pt-5">
+        <div class="font-family-primary mt-2 pt-5">
           <h2 class="text-navy">Caro(a) hóspede,</h2>
           <h3 class="text-danger">seja muito bem vindo ao nosso Resort!</h3>
           <div class="pt-4">
@@ -53,18 +53,23 @@ export default {
     posSenha: null,
     form: {
       email: "",
-      password: ""
-    }
+      password: "",
+    },
+    hourMinute: "",
   }),
   methods: {
+    getHourMinute() {
+      const data = new Date();
+      this.hourMinute = `${data.getHours()}:${data.getMinutes()}`;
+    },
     generatePassword(type) {
       atendimento
         .get(`queue/${type}`, {
           headers: {
-            Authorization: `Bearer ${this.tokenAtendimento}`
-          }
+            Authorization: `Bearer ${this.tokenAtendimento}`,
+          },
         })
-        .then(response => {
+        .then((response) => {
           // bloquear buttons
           this.print(response.data.senha);
           this.buttonsStatus = true;
@@ -85,14 +90,18 @@ export default {
       a.document.write(
         `<h5 style="text-align: center; margin: 0;">${this.posSenha}</h5>`
       );
+      a.document.write(
+        `<h5 style="text-align: center; margin: 10px 0;">Horário de impressão: ${this.hourMinute}</h5>`
+      );
       a.document.write("</body></html>");
       a.document.close();
       a.focus();
       a.print();
       a.onafterprint = a.close();
-    }
+    },
   },
   mounted() {
+    this.getHourMinute();
     this.tokenAtendimento = localStorage.getItem("tokenAtendimento");
     if (!this.tokenAtendimento) {
       this.$router.push({ path: "login-atendimento" });
@@ -100,14 +109,14 @@ export default {
     atendimento
       .get("config", {
         headers: {
-          Authorization: `Bearer ${this.tokenAtendimento}`
-        }
+          Authorization: `Bearer ${this.tokenAtendimento}`,
+        },
       })
-      .then(res => {
+      .then((res) => {
         this.preSenha = res.data[0].ds_pre_senha;
         this.posSenha = res.data[0].ds_pos_senha;
       });
-  }
+  },
 };
 </script>
 
