@@ -3,7 +3,7 @@ import axios from "axios";
 // Operador
 
 export const operador = axios.create({
-  baseURL: `http://192.168.0.20:3003`,
+  baseURL: process.env.VUE_APP_OPERADOR_API,
   headers: {
     "Content-Type": "application/json"
   }
@@ -12,7 +12,7 @@ export const operador = axios.create({
 // Monitor
 
 export const monitor = axios.create({
-  baseURL: `http://192.168.0.20:3004`,
+  baseURL: process.env.VUE_APP_MONITOR_API,
   headers: {
     "Content-Type": "application/json"
   }
@@ -21,7 +21,7 @@ export const monitor = axios.create({
 // Atendimento
 
 export const atendimento = axios.create({
-  baseURL: `http://192.168.0.20:3002`,
+  baseURL: process.env.VUE_APP_ATENDIMENTO_API,
   headers: {
     "Content-Type": "application/json"
   }

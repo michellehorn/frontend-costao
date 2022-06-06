@@ -68,7 +68,7 @@ export default {
     }
   },
   data: () => ({
-    socket: io("http://192.168.0.20:3004"),
+    socket: io(process.env.VUE_APP_MONITOR_API),
     headers: null,
     nextPassword: "1234",
     ticketWindow: "G1",
